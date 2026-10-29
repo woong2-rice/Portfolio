@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ── 색: 흰 종이 위 한 가지 청록 잉크. 각 작품 화면은 그 작품의 색을 바탕으로 씁니다. ── */
+:root {
+  --bg: #ffffff;
+  --surface: #f5f5f7;
+  --surface-2: #e8e8ed;
+  --ink: #1d1d1f;
+  --muted: #6e6e73;
+  --accent: #1d1d1f;
+  --accent-ink: #ffffff;
+  --focus: #0071e3;
+
+  --step-small: 0.875rem;
+  --step-body: clamp(1.0625rem, 1.02rem + 0.2vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.12rem + 0.6vw, 1.625rem);
+  --step-head: clamp(2rem, 1.35rem + 2.6vw, 3.75rem);
+  --step-display: clamp(2.75rem, 1.4rem + 5.2vw, 6rem);
+
+  --margin: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #161617;
+  --surface-2: #232325;
+  --ink: #f5f5f7;
+  --muted: #a1a1a6;
+  --accent: #f5f5f7;
+  --accent-ink: #000000;
+  --focus: #2997ff;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--step-body);
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  font-feature-settings: "ss06";
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+* {
+  scrollbar-color: color-mix(in oklab, var(--ink) 35%, transparent) transparent;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 제목: 두 줄을 넘지 않게, 촘촘한 자간 */
+.display {
+  font-size: var(--step-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.head {
+  font-size: var(--step-head);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.lead {
+  font-size: var(--step-lead);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+.small {
+  font-size: var(--step-small);
+  line-height: 1.5;
+}
+
+.frame {
+  padding-inline: var(--margin);
+}
+
+/* 아래로 들어오는 등장: 스크립트가 없으면 처음부터 보입니다 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 섹션 안의 부분들이 차례로 올라오는 등장 (스크립트가 있을 때만 숨겼다 보여 줌) */
+.js [data-r] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--d, 0) * 75ms);
+}
+.js [data-r].in {
+  opacity: 1;
+  transform: none;
+}
+
+/* 스크립트가 멈춰도 프리로더가 화면을 계속 가리지 않게 하는 안전장치 */
+@keyframes failsafe-hide {
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+.preloader-failsafe {
+  animation: failsafe-hide 0.3s 2.5s forwards;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
