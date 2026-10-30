@@ -60,7 +60,7 @@ supabase/feedback.sql     피드백 표 만들기 (한 번만)
 ## 배포 (Vercel)
 
 GitHub `woong2-rice/Portfolio`의 main에 올라가면 Vercel이 자동으로 다시 배포해요.
-지금 주소: https://portfolio-gamma-umber-62.vercel.app (Vercel → Settings → Domains 에서 바꿀 수 있어요)
+지금 주소: https://woong2.vercel.app (옛 주소 portfolio-gamma-umber-62.vercel.app 은 여기로 넘어와요)
 
 ## 이미지 메모
 

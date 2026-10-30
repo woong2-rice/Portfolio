@@ -5,7 +5,7 @@ export const site = {
   wordmark: "Woong's Launchpad",
   shortName: "Woong",
   /** 실제 공개 주소 (각 앱의 피드백 창이 이 사이트를 가리킬 때도 씀) */
-  url: "https://portfolio-gamma-umber-62.vercel.app",
+  url: "https://woong2.vercel.app",
   title: "Woong's Launchpad",
   description: {
     ko: "AI와 함께 아이디어를 빠르게 실현하는 메이커, 웅의 웹 앱 모음",
