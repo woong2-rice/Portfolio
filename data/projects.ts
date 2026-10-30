@@ -78,7 +78,7 @@ export const projects: Project[] = [
       ja: "長い文章の代わりに地図を塗ります。韓国の市・郡・区251か所や世界地図に訪れた場所を残すと、回数に応じて色が濃くなり、同じ記録が年表と旅の決算にもまとまります。スマホとPCで同じアカウントのまま使えます。",
       zh: "不写长篇游记，而是给地图上色。在韩国251个市郡区和世界地图上记下去过的地方，次数越多颜色越深，同一份记录还会整理成时间线和旅行总结。手机和电脑用同一个账号同步。",
     },
-    url: "https://woong2-rice.github.io/Travel-log/",
+    url: "https://travel-log-1ze.pages.dev/",
     started: { ko: "2026년 8월", en: "August 2026", ja: "2026年8月", zh: "2026年8月" },
     color: { field: "#e9ece6", ink: "#1f2a22", accent: "#56755d", soft: "#dde3db" },
     device: "laptop",
