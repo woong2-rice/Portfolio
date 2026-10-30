@@ -57,7 +57,7 @@ export const ui = {
     projects: { ko: "Projects", en: "Projects", ja: "Projects", zh: "Projects" },
     about: { ko: "About", en: "About", ja: "About", zh: "About" },
     contact: { ko: "Contact", en: "Contact", ja: "Contact", zh: "Contact" },
-    feedback: { ko: "피드백", en: "Feedback", ja: "フィードバック", zh: "反馈" },
+    feedback: { ko: "Feedback", en: "Feedback", ja: "Feedback", zh: "Feedback" },
     language: { ko: "언어", en: "Language", ja: "言語", zh: "语言" },
     skip: { ko: "본문으로 건너뛰기", en: "Skip to content", ja: "本文へスキップ", zh: "跳到正文" },
     toTop: { ko: "맨 위로", en: "Back to top", ja: "トップへ戻る", zh: "回到顶部" },
@@ -121,7 +121,7 @@ export const ui = {
     plus: { ko: "한 살 늘리기", en: "One year older", ja: "1歳増やす", zh: "加一岁" },
   },
   feedback: {
-    title: { ko: "피드백", en: "Feedback", ja: "フィードバック", zh: "反馈" },
+    title: { ko: "Feedback", en: "Feedback", ja: "Feedback", zh: "Feedback" },
     intro: {
       ko: "써 보고 불편했던 점, 고장 난 곳, 있었으면 하는 기능을 알려 주세요. 하나하나 직접 읽어요.",
       en: "Tell me what felt awkward, what broke, or what you wish existed. I read every one myself.",
