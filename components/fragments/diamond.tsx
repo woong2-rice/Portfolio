@@ -3,13 +3,13 @@ import { lineScore, modules, standings } from "@/data/diamond";
 // 다이아몬드 엔진이 실제로 낸 결과를 그 앱의 화면 조각처럼 그린 것 (data-ui: 앱 자체의 표 규칙을 씀).
 // 크기는 감싼 틀의 너비(cqw)에 맞춰 줄고 늘어납니다.
 
-const shell = "h-full w-full bg-[#14110f] text-[#f3ebdf] [container-type:inline-size] font-sans";
+const shell = "h-full w-full bg-[#0b1324] text-[#eef1f6] [container-type:inline-size] font-sans";
 
 export function DiamondLineScore() {
   const rows = [lineScore.away, lineScore.home];
   return (
     <div data-ui className={shell}>
-      <div className="flex items-center justify-between bg-[#8a3a22] px-[3cqw] py-[1.6cqw] text-[2cqw] font-semibold">
+      <div className="flex items-center justify-between bg-[#1d3461] px-[3cqw] py-[1.6cqw] text-[2cqw] font-semibold">
         <span>다이아몬드</span>
         <span className="opacity-80">2026 시즌 개막전, 사직</span>
       </div>
@@ -35,7 +35,7 @@ export function DiamondLineScore() {
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.team} className="border-t border-[#3a302a]" /* taste-skill-ignore: real table */>
+            <tr key={r.team} className="border-t border-[#24314d]" /* taste-skill-ignore: real table */>
               <td className="py-[1.3cqw] font-semibold">{r.team}</td>
               {r.runs.map((x, i) => (
                 <td key={i} className={`text-center ${x > 0 ? "font-bold text-[#f3cd6a]" : "opacity-70"}`}>
@@ -61,7 +61,7 @@ export function DiamondLineScore() {
 export function DiamondStandings() {
   return (
     <div data-ui className={shell}>
-      <div className="flex items-center justify-between bg-[#8a3a22] px-[4cqw] py-[2.4cqw] text-[3.4cqw] font-semibold">
+      <div className="flex items-center justify-between bg-[#1d3461] px-[4cqw] py-[2.4cqw] text-[3.4cqw] font-semibold">
         <span>시즌 최종 순위</span>
         <span className="opacity-80">144경기</span>
       </div>
@@ -78,7 +78,7 @@ export function DiamondStandings() {
         </thead>
         <tbody>
           {standings.map((s) => (
-            <tr key={s.team} className="border-t border-[#3a302a]" /* taste-skill-ignore: real table */>
+            <tr key={s.team} className="border-t border-[#24314d]" /* taste-skill-ignore: real table */>
               <td className="py-[1.5cqw]">{s.rank}</td>
               <td className="font-semibold">{s.team}</td>
               <td className="text-center">{s.w}</td>
@@ -96,7 +96,7 @@ export function DiamondStandings() {
 export function DiamondModules() {
   return (
     <div data-ui className={shell}>
-      <div className="bg-[#8a3a22] px-[4cqw] py-[2.4cqw] text-[3.4cqw] font-semibold">구단 운영</div>
+      <div className="bg-[#1d3461] px-[4cqw] py-[2.4cqw] text-[3.4cqw] font-semibold">구단 운영</div>
       <ul className="px-[4cqw] pt-[2cqw]">
         {modules.map((m) => (
           <li key={m.name} className="py-[2.4cqw]">

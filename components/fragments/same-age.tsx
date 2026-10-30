@@ -3,7 +3,9 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import { useId, useState } from "react";
-import { lookup, topic } from "@/data/same-age";
+import { lookup, sentence } from "@/data/same-age";
+import { ui } from "@/data/site";
+import type { Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 // 이 페이지의 '살아 있는 하나': 나이를 넣으면 같은 나이의 위인이 해낸 일이 바로 나옵니다.
@@ -15,11 +17,13 @@ export function useSameAge(initial = 24) {
 }
 
 export function AgeInput({
+  lang,
   age,
   set,
   className,
   tone = "dark",
 }: {
+  lang: Locale;
   age: number;
   set: (n: number) => void;
   className?: string;
@@ -27,18 +31,16 @@ export function AgeInput({
 }) {
   const id = useId();
   const btn =
-    tone === "dark"
-      ? "bg-[#e9c547] text-[#1f1a0c] hover:bg-[#f3dc7e]"
-      : "bg-[#1f1a0c] text-[#e9c547] hover:bg-[#3a3218]";
+    tone === "dark" ? "bg-[#e9c547] text-[#1f1a0c] hover:bg-[#f3dc7e]" : "bg-[#1f1a0c] text-[#e9c547] hover:bg-[#3a3218]";
   return (
     <div className={cn("flex flex-col gap-3", className)}>
       <label htmlFor={id} className="text-[1.0625rem] opacity-90">
-        지금 내 나이 (만)
+        {ui.sameAge.label[lang]}
       </label>
       <div className="flex items-stretch gap-2">
         <button
           type="button"
-          aria-label="한 살 줄이기"
+          aria-label={ui.sameAge.minus[lang]}
           onClick={() => set(age - 1)}
           className={cn("grid size-16 place-items-center transition-[transform,background-color] active:scale-95", btn)}
         >
@@ -56,7 +58,7 @@ export function AgeInput({
         />
         <button
           type="button"
-          aria-label="한 살 늘리기"
+          aria-label={ui.sameAge.plus[lang]}
           onClick={() => set(age + 1)}
           className={cn("grid size-16 place-items-center transition-[transform,background-color] active:scale-95", btn)}
         >
@@ -67,9 +69,17 @@ export function AgeInput({
   );
 }
 
-export function AgeResult({ age, current, next, compact = false }: ReturnType<typeof useSameAge> & { compact?: boolean }) {
+export function AgeResult({
+  lang,
+  age,
+  current,
+  next,
+  compact = false,
+}: ReturnType<typeof useSameAge> & { lang: Locale; compact?: boolean }) {
   const reduce = useReducedMotion();
-  const key = current ? `${current.who}-${age}` : `none-${age}`;
+  const key = current ? `${current.age}-${age}` : `none-${age}`;
+  const small = compact ? "text-[0.9375rem]" : "text-[1.0625rem]";
+  const big = compact ? "text-[1.25rem]" : "text-[clamp(1.5rem,1.2rem+1.2vw,2.25rem)]";
   return (
     <div aria-live="polite" className="relative">
       <AnimatePresence mode="wait" initial={false}>
@@ -82,39 +92,15 @@ export function AgeResult({ age, current, next, compact = false }: ReturnType<ty
         >
           {current ? (
             <>
-              <p
-                className={cn(
-                  "font-bold leading-[1.18] tracking-[-0.025em] [text-wrap:balance]",
-                  compact ? "text-[1.25rem]" : "text-[clamp(1.5rem,1.2rem+1.2vw,2.25rem)]",
-                )}
-              >
-                {current.age}살의 {topic(current.who)} {current.did}
+              <p className={cn("font-bold leading-[1.18] tracking-[-0.025em] [text-wrap:balance]", big)}>
+                {sentence.main(current, lang)}
               </p>
-              <p className={cn("mt-3", compact ? "text-[0.9375rem]" : "text-[1.0625rem]")}>
-                {current.year}년, {current.field}
-                {current.age !== age && `. 지금 나이보다 ${age - current.age}살 어릴 때`}
-              </p>
+              <p className={cn("mt-3", small)}>{sentence.meta(current, age, lang)}</p>
             </>
           ) : (
-            <p
-              className={cn(
-                "font-bold leading-[1.18] tracking-[-0.025em]",
-                compact ? "text-[1.25rem]" : "text-[clamp(1.5rem,1.2rem+1.2vw,2.25rem)]",
-              )}
-            >
-              {age}살이면, 모차르트도 아직 첫 교향곡을 쓰기 전이었어요.
-            </p>
+            <p className={cn("font-bold leading-[1.18] tracking-[-0.025em]", big)}>{sentence.tooYoung(age, lang)}</p>
           )}
-          {next && (
-            <p className={cn("mt-6 max-w-[38ch]", compact ? "text-[0.9375rem]" : "text-[1.0625rem]")}>
-              그리고 {next.age - age}년 뒤, {next.age}살의 {topic(next.who)} {next.did}
-            </p>
-          )}
-          {!next && current && (
-            <p className={cn("mt-6 max-w-[38ch]", compact ? "text-[0.9375rem]" : "text-[1.0625rem]")}>
-              늦었다고 생각한 나이에도 첫 책은 나와요.
-            </p>
-          )}
+          <p className={cn("mt-6 max-w-[38ch]", small)}>{next ? sentence.next(next, age, lang) : sentence.late[lang]}</p>
         </motion.div>
       </AnimatePresence>
     </div>
@@ -122,12 +108,18 @@ export function AgeResult({ age, current, next, compact = false }: ReturnType<ty
 }
 
 /** 폰 목업 안에 들어가는 작은 버전 */
-export function SameAgeScreen() {
+export function SameAgeScreen({ lang }: { lang: Locale }) {
   const s = useSameAge(26);
   return (
     <div data-ui className="flex h-full w-full flex-col justify-between bg-[#1f1a0c] px-[9%] pb-[12%] pt-[22%] text-[#f6efd8]">
-      <AgeResult {...s} compact />
-      <AgeInput age={s.age} set={s.set} tone="dark" className="[&_input]:text-[2rem] [&_button]:size-12 [&_input]:h-12 [&_input]:w-20" />
+      <AgeResult lang={lang} {...s} compact />
+      <AgeInput
+        lang={lang}
+        age={s.age}
+        set={s.set}
+        tone="dark"
+        className="[&_button]:size-12 [&_input]:h-12 [&_input]:w-20 [&_input]:text-[2rem]"
+      />
     </div>
   );
 }

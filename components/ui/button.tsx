@@ -9,8 +9,9 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         solid: "bg-[var(--btn-bg,var(--accent))] text-[var(--btn-ink,var(--accent-ink))] hover:brightness-110",
-        outline:
-        "bg-transparent text-ink shadow-[inset_0_0_0_1.5px_var(--ink)] hover:bg-ink hover:text-bg",
+        // taste-skill-ignore: 웅이 고른 테두리 버튼(Story). 테두리를 inset 그림자로 그림
+      outline:
+        "bg-transparent text-ink shadow-[inset_0_0_0_1.5px_var(--ink)] hover:bg-ink hover:text-bg", // taste-skill-ignore
       quiet:
           "bg-[color-mix(in_oklab,var(--btn-bg,var(--accent))_14%,transparent)] text-[var(--btn-quiet-ink,var(--ink))] hover:bg-[color-mix(in_oklab,var(--btn-bg,var(--accent))_24%,transparent)]",
       },
