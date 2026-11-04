@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getProject, projects } from "@/data/projects";
+import { projects } from "@/data/projects";
+import { projectMetadata } from "@/lib/project-meta";
 import { ProjectPage } from "@/components/pages/project-page";
 
 export const dynamicParams = false;
@@ -9,8 +10,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const p = getProject(id);
-  return p ? { title: p.name.ko, description: p.oneLine.ko } : {};
+  return projectMetadata(id, "ko");
 }
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {

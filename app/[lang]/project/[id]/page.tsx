@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getProject, projects } from "@/data/projects";
+import { projects } from "@/data/projects";
+import { projectMetadata } from "@/lib/project-meta";
 import { ProjectPage } from "@/components/pages/project-page";
 import { otherLocales, type Locale } from "@/lib/i18n";
 
@@ -10,8 +11,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; id: string }> }): Promise<Metadata> {
   const { lang, id } = await params;
-  const p = getProject(id);
-  return p ? { title: p.name[lang as Locale], description: p.oneLine[lang as Locale] } : {};
+  return projectMetadata(id, lang as Locale);
 }
 
 export default async function Page({ params }: { params: Promise<{ lang: string; id: string }> }) {

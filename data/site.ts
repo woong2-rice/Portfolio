@@ -20,6 +20,15 @@ export const site = {
     github: "https://github.com/woong2-rice",
     githubLabel: "github.com/woong2-rice",
   },
+  /**
+   * 검색 등록 확인 값 (비즈니스 메일 woong2biz@gmail.com 계정으로 등록). 공개되는 값이라 비밀이 아니에요.
+   *   google: 구글 서치 콘솔 > URL 접두어 > 'HTML 태그' 방식의 content="..." 안의 값
+   *   naver : 네이버 서치어드바이저 > 사이트 등록 > 'HTML 태그' 방식의 content="..." 안의 값
+   * 비어 있으면 태그를 넣지 않아요.
+   */
+  verify: { google: "", naver: "" },
+  /** 검색 결과·공유 미리보기에 쓰는 낱말 */
+  keywords: ["바이브 코딩", "vibe coding", "포트폴리오", "웹 앱", "Claude", "여행 기록장", "Langsplit", "운세주막", "다이아몬드 야구"],
   maker: {
     name: { ko: "웅", en: "Woong", ja: "ウン", zh: "Woong" } as L,
     role: {

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { RootShell } from "@/components/root-shell";
 import { site } from "@/data/site";
 import { isLocale, otherLocales } from "@/lib/i18n";
+import { languagesFor, OG_IMAGE, ogLocale, verification } from "@/lib/seo";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -16,7 +17,21 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     metadataBase: new URL(site.url),
     title: { default: site.title, template: `%s — ${site.title}` },
     description: site.description[lang],
-    alternates: { canonical: `/${lang}`, languages: { ko: "/", en: "/en", ja: "/ja", "zh-Hans": "/zh" } },
+    applicationName: site.title,
+    keywords: site.keywords,
+    authors: [{ name: site.maker.name[lang], url: site.url }],
+    alternates: { canonical: `/${lang}`, languages: languagesFor("/") },
+    openGraph: {
+      type: "website",
+      siteName: site.title,
+      title: site.title,
+      description: site.description[lang],
+      url: `/${lang}`,
+      locale: ogLocale[lang],
+      images: [OG_IMAGE],
+    },
+    twitter: { card: "summary_large_image", title: site.title, description: site.description[lang], images: [OG_IMAGE.url] },
+    verification: verification(),
   };
 }
 

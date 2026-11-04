@@ -68,3 +68,10 @@ GitHub `woong2-rice/Portfolio`의 main에 올라가면 Vercel이 자동으로 �
 - Langsplit, 운세주막 화면은 실제 앱 화면입니다. 운세주막은 `사주분석앱/03_앱/web/screenshots`의 캡처를 썼어요.
 - Langsplit 영상과 화면은 새 디자인을 실제로 플레이하며 찍었어요.
 - 다이아몬드는 아직 화면이 없어서, 엔진이 실제로 돌린 경기·시즌 결과를 HTML로 그렸어요.
+
+## 검색 등록 (구글·네이버)
+
+- `/sitemap.xml`, `/robots.txt`는 `app/sitemap.ts`, `app/robots.ts`가 자동으로 만들어요(네 언어 × 홈·작품·피드백).
+- 공유 미리보기 그림: `public/og.png`. 작품 상세는 그 작품의 첫 화면 그림을 써요.
+- 검색엔진용 구조화 데이터(만든 사람·작품 목록·주소): `components/seo-jsonld.tsx`.
+- **인증 값 넣는 곳:** `data/site.ts`의 `verify: { google: "", naver: "" }` — 비즈니스 메일(woong2biz@gmail.com) 계정으로 등록해서 받은 'HTML 태그' content 값을 넣고 main에 올리면 돼요.
