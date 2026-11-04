@@ -17,6 +17,8 @@ export const site = {
   tools: ["Claude Code", "Cursor", "Next.js", "Supabase", "Cloudflare Pages", "Python"],
   contact: {
     email: "woong2biz@gmail.com",
+    /** 네이버 메일 (같은 비즈니스용 주소) */
+    emailNaver: "woong2biz@naver.com",
     github: "https://github.com/woong2-rice",
     githubLabel: "github.com/woong2-rice",
   },
@@ -115,19 +117,6 @@ export const ui = {
     prev: { ko: "이전 작품", en: "Previous", ja: "前の作品", zh: "上一个作品" },
     next: { ko: "다음 작품", en: "Next", ja: "次の作品", zh: "下一个作品" },
     home: { ko: "메인 홈으로", en: "Back home", ja: "ホームへ", zh: "回到首页" },
-  },
-  sameAge: {
-    prompt: {
-      ko: "나이를 바꿔 보세요. 만드는 중인 사이트를 여기서 먼저 써 볼 수 있어요.",
-      en: "Change the age. You can try the site I'm building right here.",
-      ja: "年齢を変えてみてください。制作中のサイトをここで先に試せます。",
-      zh: "改改年龄试试。正在制作的网站可以先在这里体验。",
-    },
-    left: { ko: "같은 나이에", en: "At your age,", ja: "同じ歳で、", zh: "同样的年纪，" },
-    right: { ko: "그들은", en: "they…", ja: "彼らは", zh: "他们……" },
-    label: { ko: "지금 내 나이 (만)", en: "My age", ja: "いまの年齢（満）", zh: "我现在的年龄（周岁）" },
-    minus: { ko: "한 살 줄이기", en: "One year younger", ja: "1歳減らす", zh: "减一岁" },
-    plus: { ko: "한 살 늘리기", en: "One year older", ja: "1歳増やす", zh: "加一岁" },
   },
   feedback: {
     title: { ko: "Feedback", en: "Feedback", ja: "Feedback", zh: "Feedback" },

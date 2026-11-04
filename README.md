@@ -4,7 +4,7 @@
 
 - 메인(`/`): 작품 하나가 한 화면. 큰 기기 목업 + 제목 + 한 줄 + Visit Live / Story.
 - 상세(`/project/[id]`): 작품마다 다른 들어가기 장면 → 히어로 → 플레이스토어식 기능 판 → 개발 노트와 로드맵 → 이전/홈/다음.
-- '재능은 애매하지 않다'는 상세 페이지에서 바로 써 볼 수 있는 미리보기가 들어가 있어요.
+- 다이아몬드는 만들 가능성이 낮아 늘 맨 아래에 둡니다(`data/projects.ts` 맨 아래 정렬).
 
 ## 언어
 
@@ -32,7 +32,6 @@ npm run build    # 배포 전 확인
 |---|---|
 | 이름, 소개 문장, Maker's note, 도구, 연락처, 화면 곳곳의 짧은 글 | `data/site.ts` |
 | 작품 내용, 링크, 색, 기능 설명, 로드맵 | `data/projects.ts` |
-| 같은 나이 위인 목록 | `data/same-age.ts` |
 | 다이아몬드 점수표·순위표 (엔진 실행 결과) | `data/diamond.ts` |
 | 스크린샷·영상 | `public/shots/<작품>/` |
 
@@ -48,7 +47,7 @@ components/
   home/                   전시 카드, Maker's note, 연락
   project/                들어가기 장면(preloader), 기능 판, 개발 노트, 이전/다음
   device/                 IphoneFrame, MacbookFrame, Tilt(3D 기울기)
-  fragments/              다이아몬드 화면 조각, 같은 나이 위젯
+  fragments/              다이아몬드 화면 조각
   feedback-form.tsx       피드백 페이지의 입력 칸
 data/                     모든 글과 데이터 (네 언어)
 lib/i18n.ts · feedback.ts 언어 도구, 피드백 저장

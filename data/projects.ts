@@ -15,7 +15,7 @@ export type Shot = {
   video?: string;
 };
 
-export type FragmentName = "diamond-linescore" | "diamond-standings" | "diamond-modules" | "same-age";
+export type FragmentName = "diamond-linescore" | "diamond-standings" | "diamond-modules";
 
 export type Feature = {
   title: L;
@@ -51,7 +51,8 @@ export type Project = {
 
 const phone = (src: string, alt: L): Shot => ({ src, alt, width: 780, height: 1688 });
 
-export const projects: Project[] = [
+// 다이아몬드는 아직 만들 가능성이 낮아서 늘 맨 아래에 둡니다 (아래 projects 정렬 참고).
+const list: Project[] = [
   // ───────────────────────── 여행 기록장 ─────────────────────────
   {
     id: "travel-log",
@@ -144,7 +145,7 @@ export const projects: Project[] = [
       },
     ],
     devNote: {
-      tools: "Claude Code, Cursor, Supabase, GitHub Pages",
+      tools: "Claude Code, Cursor, Supabase, Cloudflare Pages",
       idea: {
         ko: "이야기를 길게 적기보다 지도를 색칠하는 느낌으로",
         en: "Less like writing a diary, more like colouring in a map",
@@ -376,6 +377,126 @@ export const projects: Project[] = [
     ],
   },
 
+  // ───────────────────────── 재능은 애매하지 않다 ─────────────────────────
+  {
+    id: "same-age",
+    name: { ko: "재능은 애매하지 않다", en: "Talent Isn't Vague", ja: "才能は曖昧じゃない", zh: "天赋并不模糊" },
+    latin: "Talent Isn't Vague",
+    status: "live",
+    statusLabel: { ko: "운영 중", en: "Live", ja: "公開中", zh: "已上线" },
+    kind: { ko: "나이 비교 사이트", en: "Age comparison site", ja: "年齢比較サイト", zh: "年龄对比网站" },
+    tagline: {
+      ko: "내 나이에 그들은 뭘 했을까",
+      en: "What had they done at my age?",
+      ja: "わたしの歳で、彼らは何をした？",
+      zh: "在我这个年纪，他们做了什么？",
+    },
+    oneLine: {
+      ko: "같은 나이, 누군가는 이미, 누군가는 아직",
+      en: "Same age: some already had, some not yet",
+      ja: "同じ歳、もう成し遂げた人と、まだだった人",
+      zh: "同样的年纪，有人已经做到，有人还没开始",
+    },
+    summary: {
+      ko: "나이와 관심 분야를 고르면, 같은 나이에 다른 사람들이 무엇을 하고 있었는지 보여 줘요. 그 나이에 이미 해낸 사람과, 그때는 아직 무명이었다가 나중에 꽃핀 사람을 나란히 놓아서 기죽기보다 힘이 나는 비교가 되도록 만들었어요. 위인뿐 아니라 스타, 인플루언서, 밈이 된 장면까지 함께 담아요.",
+      en: "Pick your age and the fields you care about, and see what other people were doing at exactly that age. It sets those who had already made it beside those who were still unknown and bloomed later, so the comparison lifts you up instead of knocking you down. Alongside historic figures, it includes stars, influencers and moments that went viral.",
+      ja: "年齢と関心分野を選ぶと、同じ歳でほかの人たちが何をしていたかを見せます。その歳ですでに成し遂げた人と、当時はまだ無名で後に花開いた人を並べて、落ち込むより力が湧く比較になるようにしました。偉人だけでなく、スター、インフルエンサー、ミームになった場面まで扱います。",
+      zh: "选择年龄和感兴趣的领域，就能看到别人在同样的年纪正在做什么。它把那个年纪已经成功的人，和当时还默默无闻、后来才大放异彩的人放在一起，让比较带来的是动力而不是沮丧。除了历史人物，还收录明星、网红和成为热梗的瞬间。",
+    },
+    url: "https://potential-iota.vercel.app",
+    started: { ko: "2026년 10월", en: "October 2026", ja: "2026年10月", zh: "2026年10月" },
+    color: { field: "#ffd600", ink: "#111111", accent: "#111111", soft: "#ffe866" },
+    device: "phone",
+    screen: phone("/shots/same-age/result.webp", {
+      ko: "같은 26세, 누군가는 이미, 누군가는 아직. 이미 해낸 사람들의 카드 목록",
+      en: "\"Same age 26: some already, some not yet\" with cards of people who had already made it",
+      ja: "「同じ26歳、もう誰かは、まだ誰かは」。すでに成し遂げた人のカード一覧",
+      zh: "“同样26岁，有人已经，有人还没”，以及已经成功者的卡片列表",
+    }),
+    features: [
+      {
+        title: { ko: "나이 하나, 분야 하나", en: "One age, one field", ja: "年齢ひとつ、分野ひとつ", zh: "一个年龄，一个领域" },
+        body: {
+          ko: "만 나이를 크게 적고 음악, 스포츠, 문학 같은 분야를 고르면 끝이에요. 세부 분야는 쉰 가지가 넘게 나눠 두었어요.",
+          en: "Type your age in big numbers and pick a field like music, sport or literature. Over fifty sub-fields let you narrow it down.",
+          ja: "満年齢を大きく入れて、音楽、スポーツ、文学などの分野を選ぶだけ。細かい分野は五十以上に分けてあります。",
+          zh: "大大地输入周岁年龄，再选音乐、体育、文学等领域就好。细分领域超过五十个。",
+        },
+        shot: phone("/shots/same-age/home.webp", {
+          ko: "노란 칸에 큰 숫자로 나이를 넣는 첫 화면",
+          en: "Home screen with a big age number in a yellow box",
+          ja: "黄色い枠に大きな数字で年齢を入れるトップ画面",
+          zh: "在黄色框里输入大号年龄数字的首页",
+        }),
+      },
+      {
+        title: { ko: "이미 해냈다", en: "Already did it", ja: "もう成し遂げた", zh: "已经做到了" },
+        body: {
+          ko: "그 나이에 이미 대표작을 낸 사람들이 먼저 나와요. 스물여섯의 아인슈타인, 스물셋의 이상처럼요.",
+          en: "First come those who had made their mark by that age: Einstein at 26, the poet Yi Sang at 23.",
+          ja: "その歳ですでに代表作を出した人が先に出てきます。26歳のアインシュタイン、23歳の詩人イ・サンのように。",
+          zh: "先出现的是在那个年纪已有代表作的人，比如26岁的爱因斯坦、23岁的诗人李箱。",
+        },
+        shot: phone("/shots/same-age/result.webp", {
+          ko: "같은 나이에 이미 해낸 사람들", en: "People who had already made it at that age", ja: "同じ歳ですでに成し遂げた人たち", zh: "同龄时已经成功的人",
+        }),
+      },
+      {
+        title: { ko: "아직이었다", en: "Not yet", ja: "まだだった", zh: "还没开始" },
+        body: {
+          ko: "같은 나이에 아직 알려지지 않았던 사람들도 나란히 보여 줘요. 마흔에 데뷔한 박완서처럼, 늦게 꽃핀 이야기가 비교를 응원으로 바꿔요.",
+          en: "Side by side are those still unknown at that age, like novelist Park Wan-suh who debuted at 39. Late bloomers turn the comparison into encouragement.",
+          ja: "同じ歳でまだ知られていなかった人も並べて見せます。39歳でデビューした作家パク・ワンソのような遅咲きの話が、比較を応援に変えます。",
+          zh: "同样也会列出那个年纪还默默无闻的人，比如39岁才出道的作家朴婉绪。大器晚成的故事，把比较变成了鼓励。",
+        },
+        shot: phone("/shots/same-age/result-late.webp", {
+          ko: "그 나이에는 아직이었던 사람들", en: "People who hadn't yet made it at that age", ja: "その歳ではまだだった人たち", zh: "在那个年纪还没成功的人",
+        }),
+      },
+      {
+        title: { ko: "한 사람의 나이표", en: "One person's age timeline", ja: "一人の年齢表", zh: "一个人的年龄表" },
+        body: {
+          ko: "누군가를 누르면 나이별로 무슨 일이 있었는지, 숫자로 본 그 장면, 출처까지 한 화면에 담겨요. 위인뿐 아니라 스타와 밈이 된 순간도 있어요.",
+          en: "Tap someone to see what happened at each age, the numbers behind the moment, and sources. Stars and viral moments sit beside historic figures.",
+          ja: "誰かを押すと、年齢ごとの出来事、数字で見たその場面、出典まで一画面に。偉人だけでなく、スターやミームになった瞬間もあります。",
+          zh: "点开某个人，就能在一个页面看到每个年龄发生的事、用数字呈现的那个瞬间，以及出处。不只有历史人物，还有明星和成为热梗的瞬间。",
+        },
+        shot: phone("/shots/same-age/person.webp", {
+          ko: "존박의 나이표와 숫자 카드", en: "John Park's age timeline and number cards", ja: "ジョン・パクの年齢表と数字カード", zh: "John Park 的年龄表与数字卡片",
+        }),
+      },
+      {
+        title: { ko: "카드로 나눠 보기", en: "Share it as a card", ja: "カードで共有", zh: "做成卡片分享" },
+        body: {
+          ko: "마음에 드는 장면은 인스타그램 세로 비율 카드로 만들어 바로 공유할 수 있어요.",
+          en: "Turn any moment you like into a portrait card sized for Instagram and share it straight away.",
+          ja: "気に入った場面はインスタグラムの縦長比率のカードにして、すぐ共有できます。",
+          zh: "喜欢的瞬间可以生成 Instagram 竖版比例的卡片，马上分享。",
+        },
+        shot: phone("/shots/same-age/person-kim.webp", {
+          ko: "김연아의 열아홉 살과 공유 버튼", en: "Kim Yuna at 19 with the share button", ja: "キム・ヨナの19歳と共有ボタン", zh: "金妍儿的19岁与分享按钮",
+        }),
+      },
+    ],
+    devNote: {
+      tools: "React, Vite, Claude Code, Wikidata, Vercel",
+      idea: {
+        ko: "'재능은 애매하지 않다'는 밈에서 시작해, 같은 나이·같은 분야의 사람과 나를 나란히 놓아 보는 사이트",
+        en: "Born from the Korean meme \"talent isn't vague\": a site that sets you beside people of the same age in the same field",
+        ja: "「才能は曖昧じゃない」というミームから始まった、同じ歳・同じ分野の人と自分を並べてみるサイト",
+        zh: "源自韩国网络梗“天赋并不模糊”，把自己和同龄、同领域的人放在一起看的网站",
+      },
+      period: { ko: "2026년 10월부터", en: "since October 2026", ja: "2026年10月から", zh: "自2026年10月起" },
+    },
+    roadmap: [
+      { version: "v0.1", state: "done", label: { ko: "노랑·검정 두 색 디자인", en: "Two-colour design in yellow and black", ja: "黄色と黒の2色デザイン", zh: "黄黑双色设计" } },
+      { version: "v1.0", state: "done", label: { ko: "사이트 공개, 공유 카드", en: "Site launch with share cards", ja: "サイト公開と共有カード", zh: "网站上线与分享卡片" } },
+      { version: "v1.1", state: "doing", label: { ko: "위키데이터로 인물 1,000명 넘게 늘리기", en: "Growing to 1,000+ people via Wikidata", ja: "ウィキデータで人物を1,000人以上に", zh: "用维基数据扩充到1000多人" } },
+      { version: "v1.2", state: "next", label: { ko: "작품 이미지와 영상 붙이기", en: "Images and videos of their work", ja: "作品の画像と映像を追加", zh: "加入作品图片与视频" } },
+      { version: "v2.0", state: "next", label: { ko: "생일을 넣으면 날짜 단위로 비교", en: "Day-by-day comparison from your birthday", ja: "誕生日から日単位で比較", zh: "输入生日，按天对比" } },
+    ],
+  },
+
   // ───────────────────────── 다이아몬드 ─────────────────────────
   {
     id: "diamond",
@@ -455,65 +576,12 @@ export const projects: Project[] = [
       { version: "v1.0", state: "next", label: { ko: "첫 시즌을 끝까지 플레이", en: "Play a full first season", ja: "最初のシーズンを最後までプレイ", zh: "完整玩完第一个赛季" } },
     ],
   },
+];
 
-  // ───────────────────────── 재능은 애매하지 않다 ─────────────────────────
-  {
-    id: "same-age",
-    name: { ko: "재능은 애매하지 않다", en: "Same Age", ja: "同い年の偉人", zh: "同龄伟人" },
-    latin: "Same Age",
-    status: "dev",
-    statusLabel: { ko: "미리보기 공개", en: "Preview", ja: "プレビュー公開", zh: "预览版" },
-    kind: { ko: "나이 비교 사이트", en: "Age comparison site", ja: "年齢比較サイト", zh: "年龄对比网站" },
-    tagline: {
-      ko: "내 나이에 그는 뭘 했을까",
-      en: "What had they done at my age?",
-      ja: "わたしの歳で、彼は何をした？",
-      zh: "在我这个年纪，他们做了什么？",
-    },
-    oneLine: {
-      ko: "내 나이에 그 사람은 무엇을 했을까",
-      en: "What did they achieve at exactly my age?",
-      ja: "わたしと同じ歳で、あの人は何をしたのか",
-      zh: "在和我一样的年纪，他们做成了什么",
-    },
-    summary: {
-      ko: "나이를 넣으면 같은 나이의 위인이 해낸 일을 보여 줘요. '재능은 애매하지 않다'는 밈에서 시작했지만, 예순다섯에 첫 책을 낸 작가도 함께 보여 줘서 마냥 기죽지는 않게 만들 생각이에요.",
-      en: "Enter your age and see what a famous figure achieved at the same age. It started from a Korean meme about undeniable talent, but it also shows a writer who published her first book at 65, so nobody leaves too discouraged.",
-      ja: "年齢を入れると、同じ歳の偉人が成し遂げたことを見せます。「才能は曖昧じゃない」というミームから始まりましたが、65歳で初めて本を出した作家も一緒に見せて、落ち込みすぎないようにするつもりです。",
-      zh: "输入年龄，就能看到同龄伟人做成的事。灵感来自韩国的“天赋不模糊”梗，但也会展示65岁才出版第一本书的作家，不让人太沮丧。",
-    },
-    started: { ko: "2026년 10월", en: "October 2026", ja: "2026年10月", zh: "2026年10月" },
-    color: { field: "#e9c547", ink: "#1f1a0c", accent: "#1f1a0c", soft: "#f3dc7e" },
-    device: "phone",
-    screen: { fragment: "same-age" },
-    features: [
-      {
-        title: { ko: "나이 하나만 넣으면", en: "Just enter an age", ja: "年齢を入れるだけ", zh: "只要输入年龄" },
-        body: {
-          ko: "숫자를 바꾸는 순간 같은 나이, 혹은 바로 아래 나이에 누군가 해낸 일이 나와요.",
-          en: "Change the number and see what someone did at that age, or just before it.",
-          ja: "数字を変えた瞬間、同じ歳かすぐ下の歳で誰かが成し遂げたことが出てきます。",
-          zh: "改变数字，立刻看到有人在这个年纪或稍早时做成的事。",
-        },
-        fragment: "same-age",
-      },
-    ],
-    devNote: {
-      tools: "Next.js, Claude Code",
-      idea: {
-        ko: "분야와 나이를 넣으면 세계적 위인의 같은 나이 업적을 보여 주는 사이트",
-        en: "A site that shows what world-famous figures achieved at your age, by field",
-        ja: "分野と年齢を入れると、世界的な偉人の同じ歳の業績を見せるサイト",
-        zh: "输入领域和年龄，展示世界级伟人同龄成就的网站",
-      },
-      period: { ko: "2026년 10월부터", en: "since October 2026", ja: "2026年10月から", zh: "自2026年10月起" },
-    },
-    roadmap: [
-      { version: "v0.1", state: "done", label: { ko: "아이디어 정리", en: "Idea", ja: "アイデア整理", zh: "整理创意" } },
-      { version: "v0.2", state: "done", label: { ko: "런치패드 속 미리보기", en: "Preview inside the Launchpad", ja: "ランチパッド内のプレビュー", zh: "在作品集中预览" } },
-      { version: "v0.3", state: "next", label: { ko: "분야별 위인 데이터와 출처", en: "Figures by field, with sources", ja: "分野別の偉人データと出典", zh: "分领域人物数据与出处" } },
-    ],
-  },
+/** 화면에 보여 줄 순서. 다이아몬드는 항상 마지막 */
+export const projects: Project[] = [
+  ...list.filter((p) => p.id !== "diamond"),
+  ...list.filter((p) => p.id === "diamond"),
 ];
 
 export function getProject(id: string) {

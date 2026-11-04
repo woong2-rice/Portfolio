@@ -11,7 +11,7 @@ export function Contact({ lang }: { lang: Locale }) {
   const id = useId();
   const hint = useId();
   const [msg, setMsg] = useState("");
-  const { email, github, githubLabel } = site.contact;
+  const { email, emailNaver, github, githubLabel } = site.contact;
 
   return (
     <section id="contact" aria-labelledby="contact-title" className="frame scroll-mt-0 bg-surface py-[clamp(7rem,12vw,11rem)]">
@@ -58,10 +58,12 @@ export function Contact({ lang }: { lang: Locale }) {
         <dl data-r style={{ ["--d" as string]: 2 }} className="mt-14 grid gap-4 text-[1.0625rem]">
           <div className="grid grid-cols-[6.5rem_1fr] gap-4">
             <dt className="text-muted">Email</dt>
-            <dd>
-              <a href={`mailto:${email}`} className="font-semibold underline underline-offset-4">
-                {email}
-              </a>
+            <dd className="grid gap-1.5">
+              {[email, emailNaver].map((m) => (
+                <a key={m} href={`mailto:${m}`} className="w-fit font-semibold underline underline-offset-4">
+                  {m}
+                </a>
+              ))}
             </dd>
           </div>
           <div className="grid grid-cols-[6.5rem_1fr] gap-4">

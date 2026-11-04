@@ -2,7 +2,6 @@ import Image from "next/image";
 import type { FragmentName, Shot } from "@/data/projects";
 import type { Locale } from "@/lib/i18n";
 import { DiamondLineScore, DiamondModules, DiamondStandings } from "./fragments/diamond";
-import { SameAgeScreen } from "./fragments/same-age";
 import { IphoneFrame } from "./device/iphone-frame";
 import { MacbookFrame } from "./device/macbook-frame";
 import { LoopVideo } from "./loop-video";
@@ -15,8 +14,6 @@ export function Fragment({ name, lang }: { name: FragmentName; lang: Locale }) {
       return <DiamondStandings />;
     case "diamond-modules":
       return <DiamondModules />;
-    case "same-age":
-      return <SameAgeScreen lang={lang} />;
   }
 }
 

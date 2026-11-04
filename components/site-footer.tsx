@@ -17,7 +17,10 @@ export function SiteFooter({ lang }: { lang: Locale }) {
             {ui.nav.feedback[lang]}
           </Link>
           <a href={`mailto:${site.contact.email}`} className="font-medium">
-            Email
+            Gmail
+          </a>
+          <a href={`mailto:${site.contact.emailNaver}`} className="font-medium">
+            Naver Mail
           </a>
           <a href={site.contact.github} target="_blank" rel="noreferrer" className="font-medium">
             GitHub

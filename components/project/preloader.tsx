@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, animate, motion, useReducedMotion } from "framer-motion";
-import { Plane } from "lucide-react";
+import { Plane, Trophy } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Project } from "@/data/projects";
 import type { Locale } from "@/lib/i18n";
@@ -11,8 +11,10 @@ import type { Locale } from "@/lib/i18n";
 //   Langsplit: 외국어 인사 카드가 좌우로 넘겨져 날아감
 //   운세주막: 창호 문이 양쪽으로 열림
 //   다이아몬드: 야구공이 포물선을 그리며 날아감
-//   재능은 애매하지 않다: 나이 숫자가 빠르게 올라감
+//   재능은 애매하지 않다: 종이에 휘갈긴 낙서를 구겨 던지면 트로피로 바뀜
 const HOLD = 1150;
+/** 종이 장면은 그리기·구기기·던지기 세 동작이라 조금 더 길게 */
+const HOLD_PAPER = 1750;
 const EASE = [0.76, 0, 0.24, 1] as const;
 
 export function Preloader({ project: p, lang }: { project: Project; lang: Locale }) {
@@ -21,9 +23,9 @@ export function Preloader({ project: p, lang }: { project: Project; lang: Locale
 
   useEffect(() => {
     if (reduce) return setShow(false);
-    const t = setTimeout(() => setShow(false), HOLD);
+    const t = setTimeout(() => setShow(false), p.id === "same-age" ? HOLD_PAPER : HOLD);
     return () => clearTimeout(t);
-  }, [reduce]);
+  }, [reduce, p.id]);
 
   const name = p.name[lang];
   const doors = p.id === "unse-jumak";
@@ -43,7 +45,7 @@ export function Preloader({ project: p, lang }: { project: Project; lang: Locale
           {p.id === "langsplit" && <CardScene color={p.color} />}
           {p.id === "unse-jumak" && <DoorScene color={p.color} name={name} />}
           {p.id === "diamond" && <BallScene />}
-          {p.id === "same-age" && <CountScene />}
+          {p.id === "same-age" && <PaperScene />}
           {!doors && <Title name={name} latin={p.latin} />}
         </motion.div>
       )}
@@ -186,24 +188,87 @@ function BallScene() {
   );
 }
 
-/** 재능은 애매하지 않다: 나이가 1부터 빠르게 올라감 */
-function CountScene() {
-  const [n, setN] = useState(1);
-  useEffect(() => {
-    const start = performance.now();
-    let raf = 0;
-    const tick = (t: number) => {
-      const k = Math.min(1, (t - start) / 950);
-      setN(Math.round(1 + 64 * (1 - Math.pow(1 - k, 3))));
-      if (k < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+/** 재능은 애매하지 않다: 종이에 낙서가 휘갈겨지고 → 구겨져 공이 되고 → 위로 던져지면 → 트로피로 바뀜 */
+function PaperScene() {
+  const D = 1.6; // 전체 길이(초)
+  // 0 등장 · 0.06 펼침 · 0.34 낙서 끝 · 0.46 구김 · 0.6 던져서 꼭대기 · 0.63 사라짐 → 트로피가 남은 시간을 채움
+  const times = [0, 0.06, 0.34, 0.46, 0.6, 0.63];
+  const scribble =
+    "M34 70 C70 38 96 92 128 58 S178 64 158 98 C132 128 64 104 50 138 S92 184 140 166 S186 164 168 204 C150 232 86 222 62 238";
   return (
-    <p className="absolute right-[var(--margin)] top-[8svh] text-[clamp(7rem,4rem+18vw,18rem)] font-bold leading-none tracking-[-0.06em] tabular-nums">
-      {n}
-    </p>
+    <div className="absolute inset-0 grid place-items-center pb-[16svh]">
+      <div className="relative">
+        {/* 종이 → 구겨진 공 */}
+        <motion.div
+          className="relative h-[min(40svh,17rem)] w-[min(56vw,13rem)] overflow-hidden bg-[#fffdf6]"
+          initial={{ opacity: 0, scale: 0.86, rotate: -9, x: "0vw", y: "5svh", borderRadius: "2%" }}
+          animate={{
+            opacity: [0, 1, 1, 1, 1, 0],
+            scale: [0.86, 1, 1, 0.3, 0.26, 0.2],
+            rotate: [-9, -5, -5, 40, 250, 290],
+            x: ["0vw", "0vw", "0vw", "0vw", "10vw", "11vw"],
+            y: ["5svh", "0svh", "0svh", "2svh", "-24svh", "-25svh"],
+            borderRadius: ["2%", "2%", "2%", "46%", "50%", "50%"],
+          }}
+          transition={{ duration: D, times, ease: "easeInOut" }}
+        >
+          <svg viewBox="0 0 200 260" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden>
+            {[52, 92, 132, 172, 212].map((y) => (
+              <line key={y} x1="18" x2="182" y1={y} y2={y} stroke="#111" strokeOpacity="0.08" strokeWidth="1.5" />
+            ))}
+            <motion.path
+              d={scribble}
+              fill="none"
+              stroke="#111"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: D * 0.06, duration: D * 0.26, ease: [0.4, 0, 0.6, 1] }}
+            />
+            {/* 구겨질 때 생기는 주름 */}
+            <motion.path
+              d="M20 40 L90 120 L60 200 M180 30 L110 130 L170 230 M30 150 L170 140"
+              fill="none"
+              stroke="#111"
+              strokeOpacity="0.35"
+              strokeWidth="3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0, 1] }}
+              transition={{ duration: D * 0.46, times: [0, 0.75, 1] }}
+            />
+          </svg>
+        </motion.div>
+
+        {/* 꼭대기에서 트로피로 */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 -ml-[4rem] -mt-[4rem]"
+          initial={{ opacity: 0, scale: 0.2, rotate: -25, x: "11vw", y: "-25svh" }}
+          animate={{
+            opacity: [0, 0, 1, 1],
+            scale: [0.2, 0.2, 1.25, 1],
+            rotate: [-25, -25, 6, 0],
+            x: ["11vw", "11vw", "11vw", "11vw"],
+            y: ["-25svh", "-25svh", "-25svh", "-25svh"],
+          }}
+          transition={{ duration: D, times: [0, 0.6, 0.7, 0.78], ease: "easeOut" }}
+        >
+          <Trophy size={128} strokeWidth={1.4} fill="#fffdf6" />
+          {/* 반짝 */}
+          {[0, 60, 120, 180, 240, 300].map((deg) => (
+            <span key={deg} className="absolute left-1/2 top-1/2 size-0" style={{ transform: `rotate(${deg}deg)` }}>
+              <motion.span
+                className="absolute left-0 top-[-1.5px] h-[3px] w-6 rounded-full bg-current"
+                initial={{ opacity: 0, x: 0 }}
+                animate={{ opacity: [0, 0, 1, 0], x: [0, 0, 74, 100] }}
+                transition={{ duration: D, times: [0, 0.62, 0.72, 0.86] }}
+              />
+            </span>
+          ))}
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
