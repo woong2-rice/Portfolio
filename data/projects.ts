@@ -1,4 +1,4 @@
-// 런치패드에 올라가는 작품 다섯 개. 글은 모두 네 언어(ko·en·ja·zh)로 씁니다.
+// 런치패드에 올라가는 작품들. 글은 모두 네 언어(ko·en·ja·zh)로 씁니다.
 // 새 작품을 추가하거나 글을 고칠 때는 이 파일만 바꾸면 메인 페이지와 상세 페이지가 함께 바뀝니다.
 import type { L } from "@/lib/i18n";
 
@@ -25,6 +25,22 @@ export type Feature = {
   fragment?: FragmentName;
 };
 
+/** 시리즈 작품(예: 삼국지 3부작) 안의 한 편. 상세 페이지에서 계단식으로 고릅니다 */
+export type Series = {
+  id: string;
+  /** 계단 위 큰 숫자 (I, II, III) */
+  numeral: string;
+  name: L;
+  latin: string;
+  /** 한 줄 정체성 */
+  tagline: L;
+  summary: L;
+  statusLabel: L;
+  /** 나는 누구인가, 시간은 어떻게 흐르나, 화면은 무엇인가 */
+  facts: { role: L; time: L; stage: L };
+  features: { title: L; body: L; shot: Shot }[];
+};
+
 export type Project = {
   id: string;
   name: L;
@@ -47,9 +63,12 @@ export type Project = {
   features: Feature[];
   devNote: { tools: string; idea: L; period: L };
   roadmap: { version: string; label: L; state: RoadmapState }[];
+  /** 있으면 상세 페이지의 기능 판 대신 '계단식 시리즈 고르기'를 보여 줍니다 */
+  series?: Series[];
 };
 
 const phone = (src: string, alt: L): Shot => ({ src, alt, width: 780, height: 1688 });
+const wide = (src: string, alt: L): Shot => ({ src, alt, width: 1600, height: 1000 });
 
 // 다이아몬드는 아직 만들 가능성이 낮아서 늘 맨 아래에 둡니다 (아래 projects 정렬 참고).
 const list: Project[] = [
@@ -497,6 +516,249 @@ const list: Project[] = [
     ],
   },
 
+  // ───────────────────────── 삼국지 3부작 ─────────────────────────
+  {
+    id: "sangokushi",
+    name: { ko: "삼국지 3부작", en: "Three Kingdoms Trilogy", ja: "三国志 三部作", zh: "三国志三部曲" },
+    latin: "Three Kingdoms Trilogy",
+    status: "dev",
+    statusLabel: { ko: "개발 중", en: "In development", ja: "開発中", zh: "开发中" },
+    kind: { ko: "역사 전략 게임 시리즈", en: "Historical strategy game series", ja: "歴史戦略ゲームシリーズ", zh: "历史策略游戏系列" },
+    tagline: {
+      ko: "하나의 시대, 세 가지 게임",
+      en: "One era, three games",
+      ja: "ひとつの時代、三つのゲーム",
+      zh: "一个时代，三款游戏",
+    },
+    oneLine: {
+      ko: "군주로, 지도 위에서, 한 사람의 장수로",
+      en: "As a ruler, across the map, as one general",
+      ja: "君主として、地図の上で、一人の武将として",
+      zh: "作为君主，在地图之上，作为一名武将",
+    },
+    summary: {
+      ko: "190년 반동탁연합에서 출발하는 전략 게임 세 편이에요. 같은 시대를 도시를 키우는 군주로, 대륙 지도를 칠하는 군주로, 그리고 한 사람의 장수로 세 번 다르게 살아 봐요. 역사 사실만 함께 쓰고 능력치와 규칙, 화면은 게임마다 따로 만들어요.",
+      en: "Three strategy games that all begin with the coalition against Dong Zhuo in 190. You live the same era three ways: as a ruler growing cities, as a ruler painting a continental map, and as a single general. Only the historical record is shared; stats, rules and screens are built separately for each game.",
+      ja: "190年の反董卓連合から始まる戦略ゲーム三作です。同じ時代を、都市を育てる君主として、大陸の地図を塗る君主として、そして一人の武将として、三通りに生きます。共有するのは史実だけで、能力値もルールも画面もゲームごとに作ります。",
+      zh: "三款都从190年反董卓联盟开始的策略游戏。同一个时代，以三种方式经历：作为经营城池的君主，作为涂满大陆地图的君主，以及作为一名武将。只共用史实，能力值、规则和画面都为每款游戏单独制作。",
+    },
+    started: { ko: "2026년 11월", en: "November 2026", ja: "2026年11月", zh: "2026年11月" },
+    color: { field: "#141a16", ink: "#ece4cc", accent: "#d8be7e", soft: "#22362d" },
+    device: "laptop",
+    screen: wide("/shots/sangokushi/classic-strategy.webp", {
+      ko: "삼국지 클래식 전략 화면. 왼쪽은 도시를 잇는 지도, 오른쪽은 낙양의 수치와 소속 무장 표",
+      en: "Classic strategy screen: a map of linked cities on the left, Luoyang's figures and officers on the right",
+      ja: "クラシックの戦略画面。左に都市を結ぶ地図、右に洛陽の数値と所属武将の表",
+      zh: "经典版战略画面：左侧是城市连线地图，右侧是洛阳的数值与所属武将表",
+    }),
+    features: [],
+    series: [
+      {
+        id: "classic",
+        numeral: "I",
+        name: { ko: "클래식", en: "Classic", ja: "クラシック", zh: "经典" },
+        latin: "Classic",
+        tagline: {
+          ko: "도시를 고르고, 장수에게 한 달 한 명령",
+          en: "Pick a city, give each officer one order a month",
+          ja: "都市を選び、武将に月ひとつの命令",
+          zh: "选一座城，每位武将每月一道命令",
+        },
+        summary: {
+          ko: "90년대 전략 게임처럼 군주가 되어 도시를 하나씩 키워요. 무장 한 명은 한 달에 명령 하나만 받을 수 있어서, 부족한 인재를 어디에 쓸지가 가장 큰 고민이에요. 침공하면 따로 열리는 육각 칸 전장에서 싸우고, 천하통일까지 10~20시간을 목표로 해요.",
+          en: "Like the strategy games of the 1990s, you rule and grow your cities one by one. Each officer takes only one order a month, so deciding where to spend scarce talent is the core dilemma. Invasions open a separate hex battlefield, and a full unification is meant to take 10 to 20 hours.",
+          ja: "90年代の戦略ゲームのように、君主として都市をひとつずつ育てます。武将は月に一つしか命令を受けられないので、足りない人材をどこに使うかが一番の悩みどころ。侵攻すると別のヘックス戦場が開き、天下統一まで10〜20時間を目指します。",
+          zh: "像90年代的策略游戏一样，作为君主逐一经营城池。每位武将每月只能接一道命令，稀缺的人才用在哪里是最大的难题。出兵会进入独立的六角格战场，统一天下的目标时长为10到20小时。",
+        },
+        statusLabel: { ko: "개발 중", en: "In development", ja: "開発中", zh: "开发中" },
+        facts: {
+          role: { ko: "군주", en: "Ruler", ja: "君主", zh: "君主" },
+          time: { ko: "한 달에 한 턴", en: "One turn a month", ja: "月に1ターン", zh: "每月一回合" },
+          stage: { ko: "도시 30곳을 잇는 지도와 도시 창", en: "A map of 30 linked cities and a city panel", ja: "30都市を結ぶ地図と都市パネル", zh: "连接30座城的地图与城市面板" },
+        },
+        features: [
+          {
+            title: { ko: "도시 창 하나로 다스린다", en: "Rule from one city panel", ja: "都市パネルひとつで治める", zh: "一个城市面板治理天下" },
+            body: {
+              ko: "지도에서 도시를 누르면 인구, 금, 병사와 소속 무장이 한 화면에 펼쳐져요. 아래에는 내정, 군사, 인사, 외교, 계략 다섯 갈래 명령이 늘 있어요.",
+              en: "Click a city and its population, gold, troops and officers open on one screen. Below sit five command groups: domestic, military, personnel, diplomacy and schemes.",
+              ja: "地図で都市を押すと、人口、金、兵士、所属武将が一画面に。下には内政、軍事、人事、外交、計略の五つの命令がいつも並びます。",
+              zh: "在地图上点一座城，人口、金钱、兵力和所属武将都在一个画面展开。下方始终有内政、军事、人事、外交、计略五类命令。",
+            },
+            shot: wide("/shots/sangokushi/classic-strategy.webp", {
+              ko: "클래식 전략 메인 화면", en: "Classic main strategy screen", ja: "クラシックの戦略メイン画面", zh: "经典版战略主画面",
+            }),
+          },
+          {
+            title: { ko: "실행 전에 결과를 본다", en: "See the result before you act", ja: "実行前に結果を見る", zh: "执行前先看结果" },
+            body: {
+              ko: "명령을 맡길 무장을 고르면 그 일에 필요한 능력 열이 밝아지고, 오를 수치와 성공률이 미리 나와요.",
+              en: "Choose who carries out an order and the relevant stat column lights up, with the expected gains and success rate shown in advance.",
+              ja: "命令を任せる武将を選ぶと、必要な能力の列が明るくなり、上がる数値と成功率が先に表示されます。",
+              zh: "选择执行命令的武将时，相关能力列会亮起，并提前显示提升数值和成功率。",
+            },
+            shot: wide("/shots/sangokushi/classic-command.webp", {
+              ko: "개간 명령 대화상자와 예상 결과", en: "Farming order dialog with expected result", ja: "開墾命令のダイアログと予想結果", zh: "开垦命令对话框与预计结果",
+            }),
+          },
+          {
+            title: { ko: "육각 칸 전장", en: "Hex battlefields", ja: "ヘックス戦場", zh: "六角格战场" },
+            body: {
+              ko: "출진하면 산, 숲, 강, 성벽이 있는 전장이 따로 열려요. 보병, 기병, 궁병이 서로 물고 물리고, 무력이 비슷하면 일기토를 걸 수 있어요.",
+              en: "Marching out opens a separate battlefield of mountains, forests, rivers and walls. Infantry, cavalry and archers counter one another, and evenly matched officers can duel.",
+              ja: "出陣すると、山、森、川、城壁のある戦場が別に開きます。歩兵、騎兵、弓兵が三すくみになり、武力が近ければ一騎打ちを挑めます。",
+              zh: "出兵后会打开有山、林、河、城墙的独立战场。步兵、骑兵、弓兵相互克制，武力相近时还能发起单挑。",
+            },
+            shot: wide("/shots/sangokushi/classic-battle.webp", {
+              ko: "육각 칸 전장과 선택한 부대", en: "Hex battlefield with the selected unit", ja: "ヘックス戦場と選択中の部隊", zh: "六角格战场与选中的部队",
+            }),
+          },
+        ],
+      },
+      {
+        id: "monarch",
+        numeral: "II",
+        name: { ko: "군주제", en: "Sovereign", ja: "君主制", zh: "君主制" },
+        latin: "Sovereign",
+        tagline: {
+          ko: "대륙 지도를 칠하며 천하를 움직인다",
+          en: "Move the realm by painting the continent",
+          ja: "大陸の地図を塗り、天下を動かす",
+          zh: "涂满大陆地图，推动天下",
+        },
+        summary: {
+          ko: "화면 전체가 지형 지도예요. 약 180개 지역을 세력 색으로 칠하고, 열흘 단위로 모든 세력이 동시에 움직여요. 내정은 태수에게 맡기고, 부대에는 목표점과 도착한 뒤 할 일만 정해 주면 보급선을 따라 알아서 행군해요.",
+          en: "The whole screen is a terrain map. Around 180 regions are painted in faction colours, and every faction moves at once in ten-day steps. Governors run domestic affairs, and armies march along their supply lines once you set a destination and what to do on arrival.",
+          ja: "画面全体が地形図です。約180の地域を勢力色で塗り、10日単位ですべての勢力が同時に動きます。内政は太守に任せ、部隊には目標地点と到着後の行動だけを決めれば、補給線に沿って進軍します。",
+          zh: "整个画面就是地形图。约180个地区按势力上色，所有势力以十天为单位同时行动。内政交给太守，部队只需设定目标点和到达后的行动，就会沿补给线自行进军。",
+        },
+        statusLabel: { ko: "화면 설계 완료", en: "Screens designed", ja: "画面設計済み", zh: "画面设计完成" },
+        facts: {
+          role: { ko: "군주", en: "Ruler", ja: "君主", zh: "君主" },
+          time: { ko: "열흘마다 모두 동시에", en: "Everyone at once, every ten days", ja: "10日ごとに全勢力同時", zh: "每十天全体同时行动" },
+          stage: { ko: "지역 약 180개의 지형 지도", en: "A terrain map of about 180 regions", ja: "約180地域の地形図", zh: "约180个地区的地形图" },
+        },
+        features: [
+          {
+            title: { ko: "지도가 주인공", en: "The map is the star", ja: "主役は地図", zh: "地图是主角" },
+            body: {
+              ko: "작전 패널은 반투명 유리처럼 지도 위에 떠 있고, 언제든 접어 지도만 볼 수 있어요. 확대할수록 지명과 숫자가 늘어나요.",
+              en: "Operation panels float over the map like frosted glass and fold away anytime. Zoom in and place names and numbers appear.",
+              ja: "作戦パネルはすりガラスのように地図の上に浮かび、いつでも畳めます。拡大するほど地名と数字が増えます。",
+              zh: "作战面板像磨砂玻璃一样浮在地图上，随时可以收起。放大后会显示更多地名和数字。",
+            },
+            shot: wide("/shots/sangokushi/monarch-map.webp", {
+              ko: "세력 색으로 칠한 작전 지도", en: "Operations map painted in faction colours", ja: "勢力色で塗った作戦地図", zh: "按势力上色的作战地图",
+            }),
+          },
+          {
+            title: { ko: "목표점만 찍는 출진", en: "March by setting a target", ja: "目標地点を決めるだけの出陣", zh: "只需设定目标的出兵" },
+            body: {
+              ko: "지도에서 목표점을 누르고 도착 후 행동을 고르면 끝이에요. 지나갈 길과 보급선, 걸리는 날짜가 먼저 보여요.",
+              en: "Tap a target on the map and choose what to do on arrival. The route, supply line and days needed are shown first.",
+              ja: "地図で目標地点を押し、到着後の行動を選ぶだけ。通る道、補給線、かかる日数が先に見えます。",
+              zh: "在地图上点选目标并选择到达后的行动即可。行军路线、补给线和所需天数会先显示出来。",
+            },
+            shot: wide("/shots/sangokushi/monarch-sortie.webp", {
+              ko: "출진 경로와 목표점", en: "March route and target", ja: "出陣経路と目標地点", zh: "出兵路线与目标点",
+            }),
+          },
+          {
+            title: { ko: "사람을 앉히는 시정", en: "Govern by placing people", ja: "人を据える市政", zh: "安排人选的施政" },
+            body: {
+              ko: "도시마다 태수와 담당관을 조직도에 앉히면 내정이 자동으로 돌아가요. 누구를 어디에 둘지가 곧 정책이에요.",
+              en: "Seat a governor and officials on each city's chart and domestic affairs run themselves. Who goes where is the policy.",
+              ja: "都市ごとに太守と担当官を組織図に配置すれば、内政は自動で回ります。誰をどこに置くかがそのまま政策です。",
+              zh: "在每座城的组织图上安排太守和各职官员，内政就会自动运转。谁放在哪里，就是政策本身。",
+            },
+            shot: wide("/shots/sangokushi/monarch-org.webp", {
+              ko: "진류의 시정 조직도", en: "Chenliu's administration chart", ja: "陳留の市政組織図", zh: "陈留的施政组织图",
+            }),
+          },
+        ],
+      },
+      {
+        id: "general",
+        numeral: "III",
+        name: { ko: "장수제", en: "General", ja: "武将制", zh: "武将制" },
+        latin: "General",
+        tagline: {
+          ko: "군주가 아닌, 한 사람의 장수로",
+          en: "Not a ruler, but one general",
+          ja: "君主ではなく、一人の武将として",
+          zh: "不是君主，而是一名武将",
+        },
+        summary: {
+          ko: "플레이어는 군주가 아니라 무장 한 명이에요. 무대 위 대화 장면에서 말을 고르면 가운데 걸린 상관도의 친분이 바뀌고, 한 달에 행동 세 번으로 임무와 교류, 수련을 골라요. 다른 세력의 사정은 소문으로만 들려요.",
+          en: "You are not the ruler but a single officer. Choose your words in stage-like dialogue scenes and the relationship web hanging centre-stage shifts. Each month you spend three actions on missions, bonds or training, and news from other factions reaches you only as rumour.",
+          ja: "プレイヤーは君主ではなく武将一人。舞台の会話場面で言葉を選ぶと、中央の相関図の親密度が変わり、月に3回の行動で任務、交流、修練を選びます。他勢力の事情は噂でしか届きません。",
+          zh: "玩家不是君主，而是一名武将。在舞台般的对话场景中选择台词，中央的关系图里的亲密度就会变化。每月有三次行动，可选任务、交往或修炼。其他势力的消息只能通过传闻得知。",
+        },
+        statusLabel: { ko: "화면 설계 완료", en: "Screens designed", ja: "画面設計済み", zh: "画面设计完成" },
+        facts: {
+          role: { ko: "무장 한 사람", en: "One officer", ja: "武将一人", zh: "一名武将" },
+          time: { ko: "한 달에 행동 세 번", en: "Three actions a month", ja: "月に3回の行動", zh: "每月三次行动" },
+          stage: { ko: "무대 장면과 상관도", en: "Stage scenes and a relationship web", ja: "舞台の場面と相関図", zh: "舞台场景与关系图" },
+        },
+        features: [
+          {
+            title: { ko: "무대 한가운데 상관도", en: "Relationships at centre stage", ja: "舞台の真ん中に相関図", zh: "舞台中央的关系图" },
+            body: {
+              ko: "말을 고르기 전에 누구와의 친분이 오르고 내리는지 상관도 위에 미리 보여요. 숨겨진 함정은 없어요.",
+              en: "Before you choose a line, the web shows whose favour will rise or fall. No hidden traps.",
+              ja: "言葉を選ぶ前に、誰との親密度が上下するかが相関図に表示されます。隠れた罠はありません。",
+              zh: "选择台词之前，关系图上会先显示与谁的亲密度会升降。没有隐藏的陷阱。",
+            },
+            shot: wide("/shots/sangokushi/general-scene.webp", {
+              ko: "조조와 하후돈의 대화 장면과 상관도", en: "Cao Cao and Xiahou Dun in a scene, with the relationship web", ja: "曹操と夏侯惇の会話場面と相関図", zh: "曹操与夏侯惇的对话场景与关系图",
+            }),
+          },
+          {
+            title: { ko: "남의 일은 소문으로", en: "Other news comes as rumour", ja: "他人のことは噂で", zh: "别人的事靠传闻" },
+            body: {
+              ko: "다른 세력의 움직임은 저잣거리와 나루에서 들은 소문으로 들어와요. 신분이 오를수록 더 멀리까지 들려요.",
+              en: "Other factions' moves arrive as rumours heard in markets and at ferries. The higher your rank, the farther you hear.",
+              ja: "他勢力の動きは、市場や渡し場で聞いた噂として届きます。身分が上がるほど遠くまで聞こえます。",
+              zh: "其他势力的动向以集市和渡口听来的传闻传入。身份越高，听得越远。",
+            },
+            shot: wide("/shots/sangokushi/general-rumors.webp", {
+              ko: "소문첩과 들리는 범위", en: "Rumour book and hearing range", ja: "噂帳と聞こえる範囲", zh: "传闻簿与可听范围",
+            }),
+          },
+          {
+            title: { ko: "일기토", en: "Single combat", ja: "一騎打ち", zh: "单挑" },
+            body: {
+              ko: "연의 속 장면이 갈림길이 되기도 해요. 관우 대신 화웅에게 맞서겠다고 나서면 일기토로 이어져요.",
+              en: "Scenes from the novel can become forks. Step up to face Hua Xiong instead of Guan Yu, and it turns into single combat.",
+              ja: "演義の場面が分かれ道になることも。関羽の代わりに華雄に立ち向かえば、一騎打ちになります。",
+              zh: "演义中的场景也会成为分岔口。若抢在关羽之前迎战华雄，就会进入单挑。",
+            },
+            shot: wide("/shots/sangokushi/general-duel.webp", {
+              ko: "하후돈과 화웅의 일기토", en: "Xiahou Dun duels Hua Xiong", ja: "夏侯惇と華雄の一騎打ち", zh: "夏侯惇与华雄单挑",
+            }),
+          },
+        ],
+      },
+    ],
+    devNote: {
+      tools: "React, Vite, TypeScript, Claude Code, IndexedDB",
+      idea: {
+        ko: "어릴 때 하던 삼국지 전략 게임들이 시대마다 달랐던 재미를, 세 편으로 나눠 직접 만들어 보자",
+        en: "Take the different kinds of fun that Three Kingdoms strategy games had across the years, and build them myself as three separate games",
+        ja: "昔遊んだ三国志の戦略ゲームが時代ごとに持っていた面白さを、三作に分けて自分で作ってみよう",
+        zh: "把小时候玩的三国策略游戏在不同年代各自的乐趣，分成三部亲手做出来",
+      },
+      period: { ko: "2026년 11월부터", en: "since November 2026", ja: "2026年11月から", zh: "自2026年11月起" },
+    },
+    roadmap: [
+      { version: "v0", state: "done", label: { ko: "3부작 기획과 세 게임의 화면 설계", en: "Trilogy plan and screen design for all three", ja: "三部作の企画と三作の画面設計", zh: "三部曲策划与三款游戏的画面设计" } },
+      { version: "C0", state: "done", label: { ko: "클래식 데이터와 뼈대", en: "Classic: data and skeleton", ja: "クラシック：データと骨組み", zh: "经典：数据与骨架" } },
+      { version: "C1", state: "doing", label: { ko: "클래식 전략 턴 (내정, 인사, AI, 저장)", en: "Classic: strategy turns (domestic, personnel, AI, saves)", ja: "クラシック：戦略ターン（内政、人事、AI、セーブ）", zh: "经典：战略回合（内政、人事、AI、存档）" } },
+      { version: "C2", state: "next", label: { ko: "클래식 전쟁 (출진, 육각 전장, 포로)", en: "Classic: war (marching, hex battles, captives)", ja: "クラシック：戦争（出陣、ヘックス戦場、捕虜）", zh: "经典：战争（出兵、六角战场、俘虏）" } },
+      { version: "1.0", state: "next", label: { ko: "클래식 천하통일까지 완주", en: "Classic: playable through to unification", ja: "クラシック：天下統一まで完走", zh: "经典：可一路玩到统一天下" } },
+      { version: "II·III", state: "next", label: { ko: "군주제, 장수제 순서로 개발", en: "Then Sovereign, then General", ja: "続いて君主制、武将制", zh: "接着开发君主制、武将制" } },
+    ],
+  },
   // ───────────────────────── 다이아몬드 ─────────────────────────
   {
     id: "diamond",

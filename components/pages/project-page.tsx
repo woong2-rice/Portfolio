@@ -7,6 +7,7 @@ import { Device } from "@/components/project-screen";
 import { Tilt } from "@/components/device/tilt";
 import { Preloader } from "@/components/project/preloader";
 import { FeatureStrip } from "@/components/project/feature-strip";
+import { SeriesStairs } from "@/components/project/series-stairs";
 import { DevNote } from "@/components/project/dev-note";
 import { ProjectNav } from "@/components/project/project-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -65,7 +66,7 @@ export function ProjectPage({ id, lang }: { id: string; lang: Locale }) {
         </div>
       </section>
 
-      <FeatureStrip project={p} lang={lang} />
+      {p.series?.length ? <SeriesStairs project={p} lang={lang} /> : <FeatureStrip project={p} lang={lang} />}
       <DevNote project={p} lang={lang} />
       <ProjectNav prev={prev} next={next} lang={lang} />
       <SiteFooter lang={lang} />

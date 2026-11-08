@@ -12,9 +12,12 @@ import type { Locale } from "@/lib/i18n";
 //   운세주막: 창호 문이 양쪽으로 열림
 //   다이아몬드: 야구공이 포물선을 그리며 날아감
 //   재능은 애매하지 않다: 종이에 휘갈긴 낙서를 구겨 던지면 트로피로 바뀜
+//   삼국지 3부작: 칼과 창이 부딪히며 불꽃이 튀고, 그 자리에서 누런 새 하늘(황천)이 열림
 const HOLD = 1150;
 /** 종이 장면은 그리기·구기기·던지기 세 동작이라 조금 더 길게 */
 const HOLD_PAPER = 1750;
+/** 칼과 창이 부딪히고 → 빛이 갈라지며 새 하늘이 열림 */
+const HOLD_CLASH = 1900;
 const EASE = [0.76, 0, 0.24, 1] as const;
 
 export function Preloader({ project: p, lang }: { project: Project; lang: Locale }) {
@@ -23,7 +26,7 @@ export function Preloader({ project: p, lang }: { project: Project; lang: Locale
 
   useEffect(() => {
     if (reduce) return setShow(false);
-    const t = setTimeout(() => setShow(false), p.id === "same-age" ? HOLD_PAPER : HOLD);
+    const t = setTimeout(() => setShow(false), p.id === "same-age" ? HOLD_PAPER : p.id === "sangokushi" ? HOLD_CLASH : HOLD);
     return () => clearTimeout(t);
   }, [reduce, p.id]);
 
@@ -46,6 +49,7 @@ export function Preloader({ project: p, lang }: { project: Project; lang: Locale
           {p.id === "unse-jumak" && <DoorScene color={p.color} name={name} />}
           {p.id === "diamond" && <BallScene />}
           {p.id === "same-age" && <PaperScene />}
+          {p.id === "sangokushi" && <ClashScene />}
           {!doors && <Title name={name} latin={p.latin} />}
         </motion.div>
       )}
@@ -269,6 +273,121 @@ function PaperScene() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+/** 삼국지 3부작: 왼쪽 아래에서 칼, 오른쪽 아래에서 창이 들어와 한가운데서 부딪힘 →
+ *  섬광과 불꽃 → 부딪힌 자리에서 금빛 해가 떠오르고 지평선이 양옆으로 갈라지며 새 하늘이 열림 */
+function ClashScene() {
+  const D = 1.8;
+  const HIT = 0.3; // 부딪히는 순간(전체 대비)
+  const GOLD = "#d8be7e";
+  const STEEL = "#e9e4d6";
+  // 두 무기가 겹치는 점이 화면의 (50%, 40%)
+  const pivot = "absolute left-1/2 top-[40%] size-0";
+  const enter = (from: string) => ({
+    x: [from, "0vw", from.startsWith("-") ? "-1.6vw" : "1.6vw", "0vw", "0vw"],
+    y: ["34vh", "0vh", "1vh", "0vh", "0vh"],
+    opacity: [0, 1, 1, 1, 0.25],
+  });
+  const enterT = { duration: D, times: [0, HIT, HIT + 0.05, HIT + 0.12, 1], ease: "easeOut" as const };
+  return (
+    <motion.div
+      className="absolute inset-0"
+      initial={{ x: 0 }}
+      animate={{ x: [0, 0, -9, 8, -4, 0] }}
+      transition={{ duration: D, times: [0, HIT, HIT + 0.02, HIT + 0.04, HIT + 0.07, HIT + 0.1] }}
+    >
+      {/* 떠오르는 금빛 해 (흐린 원) */}
+      <div className={pivot}>
+        <motion.span
+          className="absolute -left-[22vmin] -top-[22vmin] size-[44vmin] rounded-full blur-[48px]"
+          style={{ backgroundColor: GOLD }}
+          initial={{ opacity: 0, scale: 0.2 }}
+          animate={{ opacity: [0, 0, 0.75, 0.85], scale: [0.2, 0.2, 1.25, 1.7] }}
+          transition={{ duration: D, times: [0, HIT + 0.08, 0.7, 1], ease: "easeOut" }}
+        />
+      </div>
+
+      {/* 갈라지는 지평선 */}
+      <motion.span
+        className="absolute left-0 right-0 top-[40%] h-[2px] origin-center"
+        style={{ backgroundColor: GOLD }}
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: [0, 0, 1], opacity: [0, 1, 1] }}
+        transition={{ duration: D, times: [0, HIT + 0.12, 0.72], ease: [0.65, 0, 0.35, 1] }}
+      />
+
+      {/* 칼: 끝이 오른쪽 위를 향하게 */}
+      <div className={pivot}>
+        <motion.div
+          className="absolute -left-[2.6vmin] -top-[25vmin] h-[56vmin] w-[5.2vmin] origin-[50%_25vmin]"
+          style={{ rotate: 38 }}
+          initial={{ x: "-62vw", y: "34vh", opacity: 0 }}
+          animate={enter("-62vw")}
+          transition={enterT}
+        >
+          <svg viewBox="0 0 40 440" className="h-full w-full overflow-visible" aria-hidden>
+            <path d="M20 0 L27 22 L27 300 L13 300 L13 22 Z" fill={STEEL} />
+            <path d="M20 14 L20 296" stroke="#141a16" strokeOpacity="0.35" strokeWidth="2" />
+            <rect x="0" y="300" width="40" height="11" rx="2" fill={GOLD} />
+            <rect x="15" y="311" width="10" height="92" fill="#3b2a1d" />
+            <circle cx="20" cy="412" r="9" fill={GOLD} />
+          </svg>
+        </motion.div>
+      </div>
+
+      {/* 창: 끝이 왼쪽 위를 향하게, 붉은 술 */}
+      <div className={pivot}>
+        <motion.div
+          className="absolute -left-[2.6vmin] -top-[25vmin] h-[70vmin] w-[5.2vmin] origin-[50%_25vmin]"
+          style={{ rotate: -38 }}
+          initial={{ x: "62vw", y: "34vh", opacity: 0 }}
+          animate={enter("62vw")}
+          transition={enterT}
+        >
+          <svg viewBox="0 0 40 560" className="h-full w-full overflow-visible" aria-hidden>
+            <path d="M20 0 C31 34 31 70 20 104 C9 70 9 34 20 0 Z" fill={STEEL} />
+            <rect x="12" y="104" width="16" height="12" fill={GOLD} />
+            <path d="M14 118 L6 168 M18 118 L14 176 M22 118 L26 176 M26 118 L34 168" stroke="#a82828" strokeWidth="4" strokeLinecap="round" />
+            <rect x="17" y="116" width="6" height="444" fill="#7a5a3a" />
+          </svg>
+        </motion.div>
+      </div>
+
+      {/* 섬광과 불꽃 */}
+      <div className={pivot}>
+        <motion.span
+          className="absolute -left-[9vmin] -top-[9vmin] size-[18vmin] rounded-full bg-white blur-[6px]"
+          initial={{ opacity: 0, scale: 0.2 }}
+          animate={{ opacity: [0, 0, 1, 0], scale: [0.2, 0.2, 1.5, 2.6] }}
+          transition={{ duration: D, times: [0, HIT - 0.01, HIT + 0.03, HIT + 0.16] }}
+        />
+        {[0, 32, 70, 112, 150, 196, 236, 278, 318].map((deg, i) => (
+          <span key={deg} className="absolute left-0 top-0 size-0" style={{ transform: `rotate(${deg}deg)` }}>
+            <motion.span
+              className="absolute left-0 top-[-1px] h-[2px] rounded-full"
+              style={{ backgroundColor: i % 3 === 0 ? "#fff6d8" : GOLD, width: `${3 + (i % 3)}vmin` }}
+              initial={{ opacity: 0, x: 0 }}
+              animate={{ opacity: [0, 0, 1, 0], x: ["0vmin", "0vmin", `${10 + (i % 4) * 3}vmin`, `${16 + (i % 4) * 4}vmin`] }}
+              transition={{ duration: D, times: [0, HIT, HIT + 0.06, HIT + 0.2], ease: "easeOut" }}
+            />
+          </span>
+        ))}
+      </div>
+
+      {/* 새 하늘의 이름 */}
+      <motion.p
+        lang="zh-Hant"
+        className="absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2 font-serif text-[clamp(2.5rem,1.5rem+5vw,6rem)] font-bold tracking-[0.3em]"
+        style={{ color: "#141a16" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0, 1] }}
+        transition={{ duration: D, times: [0, 0.62, 0.82] }}
+      >
+        黃天
+      </motion.p>
+    </motion.div>
   );
 }
 
